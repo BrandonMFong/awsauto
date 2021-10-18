@@ -1,8 +1,8 @@
 resource "aws_s3_bucket" "automation-s3" {
-  bucket = "ece592-automation-<username>"
+  bucket = "ece592-automation-bramdp"
   acl    = "private"
   tags = {
-    Name = "ece592-automation-<username>"
+    Name = "ece592-automation-brando"
   }
 
   # Keep old versions of the state file.
