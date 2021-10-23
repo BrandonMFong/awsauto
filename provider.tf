@@ -138,7 +138,7 @@ resource "aws_security_group" "week5-automation-ssh-sg" {
 
 # EC2
 resource "aws_instance" "week5-automation-vm" {
-  ami                  = data.aws_ami.latest-ubuntu.id
+  ami                  = "ami-02e136e904f3da870"
   instance_type        = "t2.micro"
   subnet_id            = aws_subnet.week5-automation-sub-a.id
   iam_instance_profile = aws_iam_instance_profile.week5-automation-profile.name

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "automation-s3" {
-  bucket = "ece592-automation-bramdp"
+  bucket = "ece592-automation-brando"
   acl    = "private"
   tags = {
     Name = "ece592-automation-brando"
