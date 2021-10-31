@@ -1,51 +1,19 @@
-#resource "aws_s3_bucket" "automation-s3" {
-#  bucket = "ece592-automation-brando"
-#  acl    = "private"
-#  tags = {
-#    Name = "ece592-automation-brando"
-#  }
-
-# Keep old versions of the state file.
-#  versioning {
-#    enabled = true
-#  }
-
-# Transition old versions to cheaper storage after 30 days.
-#  lifecycle_rule {
-#    enabled = true
-#    tags    = {}
-#    noncurrent_version_transition {
-#      days          = 30
-#      storage_class = "STANDARD_IA"
-#    }
-#  }
-
-# Encryption at rest using default AWS keys!
-#  server_side_encryption_configuration {
-#    rule {
-#      apply_server_side_encryption_by_default {
-#        sse_algorithm = "AES256"
-#      }
-#    }
-#  }
-#}
-
 # Week 8 s3 bucket 
 data "aws_caller_identity" "current" {}
 
-resource "aws_cloudtrail" "foobar" {
-  name                          = "tf-trail-foobar"
-  s3_bucket_name                = aws_s3_bucket.week8-s3.id
+resource "aws_cloudtrail" "automation-cloudtrail-v2" {
+  name                          = "automation-cloudtrail-v2"
+  s3_bucket_name                = aws_s3_bucket.ece592-athena-cache-v2.id
   s3_key_prefix                 = "prefix"
   include_global_service_events = true
   is_multi_region_trail         = true
 }
 
-resource "aws_s3_bucket" "week8-s3" {
-  bucket        = "ece592-cloudtrail-brando"
+resource "aws_s3_bucket" "ece592-athena-cache-v2" {
+  bucket        = "ece592-athena-cache-v2"
   force_destroy = true
   tags = {
-    Name = "ece592-cloudtrail-brando"
+    Name = "ece592-athena-cache-v2"
   }
 
 
@@ -60,7 +28,7 @@ resource "aws_s3_bucket" "week8-s3" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:aws:s3:::ece592-cloudtrail-brando"
+            "Resource": "arn:aws:s3:::ece592-athena-cache-v2"
         },
         {
             "Sid": "AWSCloudTrailWrite",
@@ -69,7 +37,7 @@ resource "aws_s3_bucket" "week8-s3" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::ece592-cloudtrail-brando/*",
+            "Resource": "arn:aws:s3:::ece592-athena-cache-v2/*",
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"

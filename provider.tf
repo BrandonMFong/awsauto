@@ -11,7 +11,7 @@ terraform {
 
   backend "s3" {
     bucket = "ece592-cloudtrail-brando"
-    key    = "state.week8"
+    key    = "state.automation"
     region = "us-east-1"
   }
 }
@@ -28,10 +28,6 @@ resource "aws_vpc" "week8-vpc-v2" {
 
   tags = {
     Name = "week8-vpc"
-  }
-
-  lifecycle {
-    prevent_destroy = true
   }
 }
 
@@ -165,7 +161,7 @@ resource "aws_instance" "week8-vm-v2" {
   ami                  = "ami-02e136e904f3da870"
   instance_type        = "t2.micro"
   subnet_id            = aws_subnet.week8-sub-a-v2.id
-  iam_instance_profile = aws_iam_instance_profile.week8-profile-v2.name
+  iam_instance_profile = aws_iam_instance_profile.automation_iam_profile-v2.name
 
   vpc_security_group_ids = [
     aws_security_group.week8-ssh-sg-v2.id
@@ -194,12 +190,8 @@ data "aws_ami" "latest-ubuntu" {
 }
 
 # IAM profile ref
-resource "aws_iam_instance_profile" "week8-profile-v2" {
-  name = "week8-profile-v2"
-  role = aws_iam_role.automation-role-v2.name
+resource "aws_iam_instance_profile" "automation_iam_profile-v2" {
+  name = "automation_iam_profile-v2"
+  role = aws_iam_role.automation-role-v3.name
   tags = {}
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
